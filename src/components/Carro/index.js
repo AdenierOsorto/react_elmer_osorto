@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Burbuja } from '../Burbuja'
 import styles from './estilos'
-
+import {CarroContenedor, CarroB, ListaArticulos, Ul, Li, DeleteButton} from './styles'
 export const Carro = ({ cantidad, productos, eliminarProducto}) => {
     const [mostrarCarro, setMostrarCarro] = useState(false)
 
@@ -14,44 +14,54 @@ export const Carro = ({ cantidad, productos, eliminarProducto}) => {
     let totalPagar = subTotal + impto
 
     return (
-        <div style={styles.carroContenedor}>
+        <CarroContenedor>
             {cantidad > 0 && <Burbuja cantidad={cantidad} />}
-            <button onClick={handleMostrarCarro} style={styles.carro}>
+            <CarroB onClick={handleMostrarCarro}>
                 Carro
-            </button>
+            </CarroB>
             {
                 (cantidad > 0 && mostrarCarro) && 
-                    <div style={styles.listaArticulos}>
-                        <ul style={styles.ul}>
+                    <ListaArticulos >
+                        <Ul>
                             {
                                 productos.map(x => {
                                     return (
-                                        <li key={x.id} style={styles.li}>
+                                        <Li key={x.id}>
                                             <img height={25} alt={x.nombre} src={x.imagen} />
-                                            <span><button onClick={() => eliminarProducto(x)} style={styles.deleteButton}>X</button>{x.nombre }</span>
+                                            <span><DeleteButton onClick={() => eliminarProducto(x)}>X</DeleteButton>{x.nombre }</span>
                                             <span>
                                                 ({x.cantidad} x {x.precio.toLocaleString()}) = <strong>{(x.cantidad * x.precio).toLocaleString()}</strong>
                                             </span>
-                                        </li>
+                                        </Li>
                                     )
                                 })
                             }
-                            <li style={styles.li}>
+                            <Li>
                                 <strong>Sub total</strong>
                                 <strong>{subTotal.toLocaleString()}</strong>
-                            </li>
-                            <li style={styles.li}>
+                            </Li>
+                            <Li>
                                 <strong>Impuesto</strong>
                                 <strong>{impto.toLocaleString()}</strong>
-                            </li>
-                            <li style={styles.li}>
+                            </Li>
+                            <Li>
                                 <strong>Total a pagar</strong>
                                 <strong>{totalPagar.toLocaleString()}</strong>
-                            </li>
-                        </ul>
-                    </div>
+                            </Li>
+                        </Ul>
+                    </ListaArticulos>
             }
-        </div>
+        </CarroContenedor>
 
     )
 }
+
+
+/**
+ *  div -> CarroContenedor
+ *  Button -> Carro
+ *  div -> listaArticulos
+ *  ul -> ul
+ *  li -> li
+ * 
+ */
