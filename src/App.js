@@ -1,25 +1,25 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { Articulos } from "./components/Articulos"
 import { Navbar } from './components/Navbar'
-
-// base de datos
-const informacion = {
-  articulos: [
-    {id: 1, nombre: 'Homepod Mini', precio: 99, imagen: '/images/homepod-mini.jpg'},
-    {id: 2, nombre: 'iMac', precio: 1200, imagen: '/images/imac.jpeg'},
-    {id: 3, nombre: 'iPad Mini', precio: 400, imagen: '/images/ipad-mini.jpg'},
-    {id: 4, nombre: 'iPhone 13 Pro', precio: 1100, imagen: '/images/iphone13-pro.jpg'},
-    {id: 5, nombre: 'Macbook Pro', precio: 1600, imagen: '/images/macbook-pro.png'}
-  ],
-  carrito: [
-    //{id: 1, nombre: 'Homepod Mini', precio: 99, imagen: '/images/homepod-mini.jpg', cantidad: 2},
-  ]
-}
-
+import { informacion } from './api/basedatos'
 
 function App() {
   const [data, setData] = useState(informacion)
-  
+  const [accion, setAccion] = useState(-1)
+
+  useEffect(() =>{
+    mensaje();
+  }, [accion, data]);
+
+  const mensaje = () =>{
+    if(accion === -1){
+      return
+    }else if(!accion){
+      alert("Se eliminó el producto correctamente");
+    }else{
+      alert("Se agregó el producto");
+    }
+  }
   const agregarAlCarro = (producto) => {
     // 1- Verificar si el producto clickeado ya està en el carrito
     if (data.carrito.find(x => x.id === producto.id)) {
@@ -29,9 +29,10 @@ function App() {
       setData({...data})
       return
     }
-
+    
     data.carrito.push({...producto, cantidad: 1})
     setData({...data})
+    setAccion(true)
   }
   const eliminarProducto = (producto) => {
     
@@ -39,6 +40,7 @@ function App() {
       const index = data.carrito.findIndex(x => x.id === producto.id);
       data.carrito.splice(index, 1);
       setData({...data})
+      setAccion(false)
     }
     
   }
