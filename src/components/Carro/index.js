@@ -2,11 +2,12 @@ import { useState } from 'react'
 import { Burbuja } from '../Burbuja'
 import styles from './estilos'
 
-export const Carro = ({ cantidad, productos }) => {
-
+export const Carro = ({ cantidad, productos, eliminarProducto}) => {
     const [mostrarCarro, setMostrarCarro] = useState(false)
 
     const handleMostrarCarro = _ => setMostrarCarro(!mostrarCarro)
+    
+
 
     let subTotal = productos.reduce((acum, prod) => (prod.cantidad * prod.precio) + acum, 0)
     let impto = subTotal * 0.15
@@ -25,9 +26,9 @@ export const Carro = ({ cantidad, productos }) => {
                             {
                                 productos.map(x => {
                                     return (
-                                        <li style={styles.li}>
+                                        <li key={x.id} style={styles.li}>
                                             <img height={25} alt={x.nombre} src={x.imagen} />
-                                            <span><button style={styles.deleteButton}>X</button> Hola{x.nombre}</span>
+                                            <span><button onClick={() => eliminarProducto(x)} style={styles.deleteButton}>X</button>{x.nombre }</span>
                                             <span>
                                                 ({x.cantidad} x {x.precio.toLocaleString()}) = <strong>{(x.cantidad * x.precio).toLocaleString()}</strong>
                                             </span>

@@ -33,7 +33,15 @@ function App() {
     data.carrito.push({...producto, cantidad: 1})
     setData({...data})
   }
-
+  const eliminarProducto = (producto) => {
+    
+    if(window.confirm('¿Quiere eliminar este producto?')){
+      const index = data.carrito.findIndex(x => x.id === producto.id);
+      data.carrito.splice(index, 1);
+      setData({...data})
+    }
+    
+  }
   // App > Navbar > Carro > Burbuja > Numero de productos
 
   // let cantidad = data.carrito.length
@@ -41,8 +49,8 @@ function App() {
 
   return (
     <Fragment>
-      <Navbar cantidad={cantidad} productos={data.carrito} />
-      <Articulos agregarAlCarro={agregarAlCarro} data={data} />
+      <Navbar cantidad={cantidad} eliminarProducto = {eliminarProducto} productos={data.carrito} />
+      <Articulos agregarAlCarro={agregarAlCarro}  data={data} />
     </Fragment>
   );
 }
