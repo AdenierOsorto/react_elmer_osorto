@@ -10,7 +10,19 @@ const styles = {
         position: 'fixed',
         top: 0,
         width: '100%',
+    },
+    btn: {
+        background: '#0f80ff',
+        border: 'none',
+        borderRadius: 5,
+        color: '#fff',
+        cursor: 'pointer',
+        padding: '8px 15px'
+    },
+    input: {
+        width: '50%'
     }
+
 }
 
 export default styles

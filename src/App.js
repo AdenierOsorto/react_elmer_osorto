@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useState, useEffect, useRef } from 'react'
 import { Articulos } from "./components/Articulos"
 import { Navbar } from './components/Navbar'
 import { informacion } from './api/basedatos'
@@ -6,12 +6,10 @@ import { informacion } from './api/basedatos'
 function App() {
   const [data, setData] = useState(informacion)
   const [accion, setAccion] = useState(-1)
+  const inputBuscar = useRef(null);
+  const [filtro, setFiltro] = useState(informacion.articulos)
 
   useEffect(() =>{
-    mensaje();
-  }, [accion, data]);
-
-  const mensaje = () =>{
     if(accion === -1){
       return
     }else if(!accion){
@@ -19,7 +17,11 @@ function App() {
     }else{
       alert("Se agregó el producto");
     }
-  }
+  }, [accion, data]);
+
+  
+    
+  
   const agregarAlCarro = (producto) => {
     // 1- Verificar si el producto clickeado ya està en el carrito
     if (data.carrito.find(x => x.id === producto.id)) {
@@ -44,6 +46,15 @@ function App() {
     }
     
   }
+
+  const buscarProducto = (producto) => {
+    if(inputBuscar.current.value.trim()){
+      let item = (producto.articulos.filter(x => x.nombre.toUpperCase().match(inputBuscar.current.value.toUpperCase())));
+      setFiltro(item);
+    }else{
+      setFiltro(data.articulos);
+    }
+  }
   // App > Navbar > Carro > Burbuja > Numero de productos
 
   // let cantidad = data.carrito.length
@@ -51,8 +62,8 @@ function App() {
 
   return (
     <Fragment>
-      <Navbar cantidad={cantidad} eliminarProducto = {eliminarProducto} productos={data.carrito} />
-      <Articulos agregarAlCarro={agregarAlCarro}  data={data} />
+      <Navbar cantidad={cantidad} data={data} buscarProducto={buscarProducto} inputBuscar={inputBuscar} eliminarProducto={eliminarProducto} productos={data.carrito} />
+      <Articulos agregarAlCarro={agregarAlCarro}  filtro={filtro} />
     </Fragment>
   );
 }
